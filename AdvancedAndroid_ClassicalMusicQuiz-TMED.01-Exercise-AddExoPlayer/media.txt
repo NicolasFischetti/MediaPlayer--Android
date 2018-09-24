@@ -1,0 +1,66 @@
+ui se comunica con el media controller y con el media session(metadata, callback, playback state).
+La comunicacion entre el media controller y el media session se produce los session callbacks y controller callbacks.
+Ahi se determina si una cancion se la da play, stop, pause, etc. El media session se conecta con un servidor,
+y los controllers se vuelven los clientes los cuales pueden ser notificaciones, autos, headphones, etc. El media
+session permite cambiar de canciones a videos y a su vez modificar la ui dependiendo de su compartamiento. 
+
+Para las aplicaciones de video el ciclo de vida esta completamente ligado a la vida del UI.
+Todos los componentes del la aplicacion de media estan implementados en una activity individual, donde
+interactuan el media controller con la UI, y el media session con el player
+
+Quieres tener tu media session corriendo en un servicio, el cual al actualizar tu ui el estado del player cambie
+
+Media formats- uno puedo ser utilizado para el audio y otro para el video. Ambos actuan a la vez.
+
+Exoplayer soporta todos los formatos para video, audio, etc.
+
+The format of the individual media samples (e.g., a frame of video or a frame of audio). 
+We call these sample formats. 
+Note that a typical video file will contain media in at least two sample formats; 
+one for video (e.g., H.264) and one for audio (e.g., AAC).
+The format of the container that houses the media samples and associated metadata. 
+We call these container formats. A media file has a single container format (e.g., MP4),
+ which is commonly
+indicated by the file extension. Note that for some audio only formats (e.g., MP3), 
+the sample and container formats may be the same.
+Adaptive streaming technologies such as DASH, SmoothStreaming and HLS.
+ These are not media formats as such, however it’s 
+still necessary to define what level of support ExoPlayer provides.
+
+
+Cuando estas vistas están infladas, 
+usan archivos de diseño específicos para 
+determinar cómo se ve la interfaz de usuario. 
+Para SimpleExoPlayerView, este archivo se llama: 
+exo_simple_player_view.xml. Este archivo de diseño 
+incluye PlayBackControlView (una vez que está inflado,
+ reemplaza el elemento exo_controller_placeholder) que también usa
+ su propio archivo de diseño: exo_playback_control_view.xml.
+
+Si incluye cualquier archivo de diseño con los mismos nombres,
+ ExoPlayer los usará en lugar de estos predeterminados. 
+Esto le permite personalizar completamente el aspecto de la interfaz de usuario.
+
+Una advertencia: se requiere el uso de identificadores estándar 
+(como exo_play) para que las vistas de los niños se puedan identificar,
+ vincular al jugador y actualizar de manera adecuada.
+ Se puede encontrar una lista completa de los identificadores estándar 
+para cada vista en el Javadoc para PlaybackControlView y SimpleExoPlayerView. 
+El uso de cada ID estándar es opcional, por lo que podremos omitir algunos de 
+los controles de reproducción habituales en nuestro ejemplo.
+
+
+El problema con el método anterior es que personaliza la 
+interfaz de usuario para cada instancia de SimpleExoPlayerView 
+(y / o PlaybackControlView). Para nuestro caso de uso, esto no 
+importa ya que solo tenemos una vista de jugador.
+ Sin embargo, si necesita personalizar instancias individuales,
+ puede usar una combinación de los dos métodos anteriores:
+ use el atributo player_layout_id para un SimpleExoPlayerView personalizado, 
+o el controlador_layout_id para un PlaybackControlView personalizado y 
+especifique un archivo de diseño personalizado para anular el diseño para ese 
+específico ejemplo.
+
+No necesitamos personalización de instancia individual, por lo tanto, anule el archivo de diseño exo_playback_control_view.xml para la vista de control de reproducción (incluido en nuestro SimpleExoPlayerView) y elimine el salto a los botones siguiente, rápido y rebobinado (aquí puede copiar el diseño predeterminado).
+
+Después de completar esto, ejecute la aplicación y observe el cambio en la UI.
